@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script type="text/javascript">
+        function websocketConnect() {
+            if ("WebSocket" in window) {
+                let hostname = window.location.hostname;
+                let port = window.location.port;
+                var ws = new WebSocket("ws://" + hostname + ":" + port);
+                ws.onopen = function () {
+                    document.getElementById("connectionStatus").innerText = "🟢";
+                }
+                ws.onclose = function () {
+                    document.getElementById("connectionStatus").innerText = "🔴";
+                    setTimeout(function () {
+                        websocketConnect();
+                    }, 3000);
+                }
+                ws.onmessage = function (event) {
+                    let data = event.data;
+                    let li = document.createElement("li");
+                    let text = document.createTextNode(data);
+                    li.appendChild(text);
+                    let console = document.getElementById("panel");
+                    let bool = console.scrollHeight - console.scrollTop === console.clientHeight;
+                    document.getElementById("console").appendChild(li);
+                    if (bool == true) {
+                        scrollToBottomIfNeed();
+                    }
+                }
+            } else {
+                console.log("not support websocket");
+            }
+        }
+        function scrollToBottomIfNeed() {
+            var element = document.getElementById("panel");
+            element.scrollTop = element.scrollHeight - element.clientHeight;
+        }
+        function cleanConsole() {
+            var console = document.getElementById("console");
+            console.innerHTML = "";
+        }
+        </script>
+        <style>
+            body {
+                padding: 0;
+                margin: 0;
+                background-color: rgb(38, 31, 35);
+            }
+            #page {
+                padding: 0;
+                margin: 0;
+                width: 100%;
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+                /* -webkit-overflow-scrolling: touch; */
+            }
+            #menu,#toolbar {
+                background-color: rgb(38, 31, 35);
+                flex: 1;
+                min-height: 15px;
+                padding: 8px;
+                display: flex;
+                flex-direction: row-reverse;
+            }
+            #toolbar {
+                flex: 2;
+                min-height: 30px;
+            }
+            #panel {
+                flex: 40;
+                background-color: rgb(40, 43, 53);
+                overflow: hidden;
+                overflow-y: auto;
+            }
+            #panel ul {
+                list-style: none;
+                padding: 0px 20px 0px 20px;
+                margin: 0;
+            }
+            #panel ul li {
+                color: white;
+                font-size:x-large;
+            }
+            .button {
+                border: 2px solid white;
+                color: white;
+                padding: 0px 32px;
+                margin-left: 10px;
+                margin-right: 10px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 18px;
+                font-weight: bold;
+                transition-duration: 0.3s;
+                cursor: pointer;
+                background-color: transparent;
+            }
+            .button:hover {
+                background-color: white;
+                color: black;
+            }
+            a {
+                align-self: center;
+                color: white;
+                margin-left: 10px;
+                margin-right: 10px;
+            }
+            #connectionStatus {
+                align-self: center;
+                color: white;
+                margin-left: 10px;
+                margin-right: 10px;                
+            }
+        </style>
+    </head>
+    <body onload="websocketConnect()">
+        <div id="page">
+            <div id="menu">
+                <a href="https://bing.com">Github</a>
+                <p id="connectionStatus" title="WebSocket connection">🔴</p>
+            </div>
+            <div id="panel">
+                <ul id="console">                
+                </ul>
+            </div>
+            <div id="toolbar">
+                <input class="button" type="button" onclick="scrollToBottomIfNeed()" value="to bottom">
+                <input class="button" type="button" onclick="cleanConsole()" value="clean">
+            </div>
+        </div>
+    </body>
+</html>
