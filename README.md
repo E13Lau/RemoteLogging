@@ -37,7 +37,7 @@ var logger = Logger(label: "Example logger") { (label) -> LogHandler in
 }
 logger.debug("🎉")
 ```
-then open link: http://{device hostname or ip address}:50113/  .Log will be print in web page.
+then open link: `http://{device hostname or ip address}:50113/`  .Log will be print in web page.
 
 Alternatively, you can set default logger globally using the LoggingSystem.bootstrap() method.
 
@@ -61,14 +61,10 @@ log.debug("🎉")
 
 LocalServer.default is a static http server, default port is 9777
 
-then open link: http://{device hostname or ip address}:9777/  .Log will be print in web page.
+then open link: `http://{device hostname or ip address}:9777/`  .Log will be print in web page.
 
-[image1](./image1)
+![image1](image1.png)
 
+## License
 
-`Do not use it in a production environment, all the consequences arising therefrom have nothing to do with me!`
-
-
-
-
-请勿使用于生产环境，由此产生的一切后果与本人无关！
+RemoteLogging is released under the MIT license.

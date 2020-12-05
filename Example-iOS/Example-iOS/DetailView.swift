@@ -16,9 +16,11 @@ struct DetailView: View {
                 timer.toggle()
             }
         }.onAppear{
+            logger.info("🎉🎉🎉")
             log.trace("Detail onAppear!!")
         }.onDisappear {
             timer.stop()
+            logger.info("🎉🎉🎉")
             log.trace("Detail onDisappear!!")
         }
     }

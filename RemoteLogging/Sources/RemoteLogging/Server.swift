@@ -15,7 +15,7 @@ public class LocalServer: RemoteLogServer {
         
         do {
             try httpServer.start(port: port)
-            print("🎉🎉🎉 RemoteLoggin run in \(port)")
+            print("🎉🎉🎉 RemoteLoggin run in \(httpServer.port)")
         } catch {
             print(error.localizedDescription)
         }

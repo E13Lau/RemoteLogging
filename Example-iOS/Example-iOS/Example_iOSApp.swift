@@ -10,7 +10,12 @@ import RemoteLogging
 import Logging
 
 var log = Logger(label: "Example")
-
+//also you can using RemoteLogHandler like this
+var logger = Logger(label: "Example logger") { (label) -> LogHandler in
+    let server = LocalServer()
+    server.runServer(port: 50113)
+    return RemoteLogHandler(label: label, server: server)
+}
 
 @main
 struct Example_iOSApp: App {
@@ -29,16 +34,10 @@ struct Example_iOSApp: App {
 }
 
 class AppDelegate: NSObject, UIApplicationDelegate {
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         initRemoteLogging()
-        
-        //also you can using RemoteLogHandler like this
-        let server = LocalServer()
-        server.runServer(port: 0)
-        var logger = Logger(label: "Example logger") { (label) -> LogHandler in
-            return RemoteLogHandler(label: label, server: server),
-        }
-        logger.info("🎉🎉🎉")
+        logger.logLevel = .info
         
         return true
     }
