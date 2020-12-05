@@ -1,4 +1,5 @@
 import Telegraph
+import Foundation
 
 public class LocalServer: RemoteLogServer {
     public static var `default` = LocalServer()
@@ -17,7 +18,12 @@ public class LocalServer: RemoteLogServer {
             try httpServer.start(port: port)
             print("🎉🎉🎉 RemoteLoggin run in \(httpServer.port)")
         } catch {
-            print(error.localizedDescription)
+            print("RemoteLoggin -", error.localizedDescription)
+            let nsError = error as NSError
+            if nsError.code == 48 {
+                print("RemoteLoggin -", "using automatic port assignment")
+                runServer(port: 0)
+            }
         }
     }
     
