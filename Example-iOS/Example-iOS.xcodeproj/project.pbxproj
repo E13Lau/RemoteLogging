@@ -11,9 +11,22 @@
 		5B9A02DC257A77F10021BC99 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9A02DB257A77F10021BC99 /* ContentView.swift */; };
 		5B9A02DE257A77F10021BC99 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5B9A02DD257A77F10021BC99 /* Assets.xcassets */; };
 		5B9A02E1257A77F10021BC99 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5B9A02E0257A77F10021BC99 /* Preview Assets.xcassets */; };
-		5B9A02EB257A7BA90021BC99 /* RemoteLogging in Frameworks */ = {isa = PBXBuildFile; productRef = 5B9A02EA257A7BA90021BC99 /* RemoteLogging */; };
+		5B9D940B257FD7B300F974B3 /* RemoteLogging in Frameworks */ = {isa = PBXBuildFile; productRef = 5B9D940A257FD7B300F974B3 /* RemoteLogging */; };
 		5B9EEE1F257B204D00D6B217 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9EEE1E257B204D00D6B217 /* DetailView.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		5BAF9A9C257E8B17007609BD /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		5B9A02D6257A77F10021BC99 /* Example-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Example-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -30,7 +43,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5B9A02EB257A7BA90021BC99 /* RemoteLogging in Frameworks */,
+				5B9D940B257FD7B300F974B3 /* RemoteLogging in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -92,6 +105,7 @@
 				5B9A02D2257A77F10021BC99 /* Sources */,
 				5B9A02D3257A77F10021BC99 /* Frameworks */,
 				5B9A02D4257A77F10021BC99 /* Resources */,
+				5BAF9A9C257E8B17007609BD /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -99,7 +113,7 @@
 			);
 			name = "Example-iOS";
 			packageProductDependencies = (
-				5B9A02EA257A7BA90021BC99 /* RemoteLogging */,
+				5B9D940A257FD7B300F974B3 /* RemoteLogging */,
 			);
 			productName = "Example-iOS";
 			productReference = 5B9A02D6257A77F10021BC99 /* Example-iOS.app */;
@@ -347,7 +361,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		5B9A02EA257A7BA90021BC99 /* RemoteLogging */ = {
+		5B9D940A257FD7B300F974B3 /* RemoteLogging */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = RemoteLogging;
 		};
