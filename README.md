@@ -27,7 +27,7 @@ dependencies: [
 ### Cocoapods
 
 ```ruby
-pod "RemoteLoggingKit"
+pod "RemoteLoggingKit", :git => 'https://github.com/E13Lau/RemoteLogging.git'
 ```
 
 ## Usage
@@ -112,7 +112,7 @@ dependencies: [
 ### Cocoapods
 
 ```ruby
-pod "RemoteLoggingKit"
+pod "RemoteLoggingKit", :git => 'https://github.com/E13Lau/RemoteLogging.git'
 ```
 
 ## 使用
