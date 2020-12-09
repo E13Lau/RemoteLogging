@@ -6,10 +6,10 @@ Pod::Spec.new do |spec|
   spec.license        = 'MIT'
   spec.author         = 'e13lau'
   spec.module_name    = 'RemoteLogging'
-  spec.source         = { :git => 'https://github.com/E13Lau/RemoteLogging.git', :tag => spec.version.to_s }
+  spec.source         = { :git => 'https://github.com/E13Lau/RemoteLogging.git', :tag => '0.0.3' }
   spec.source_files   = 'Sources/RemoteLogging/**/*.swift'
   spec.swift_version  = '5.0'
-  spec.resource_bundles = { 'RemoteLogging_RemoteLogging' => ['Sources/RemoteLogging/Resources/*.*'] }
+  spec.resource_bundles = { 'RemoteLogging_RemoteLogging' => ['Sources/RemoteLogging/Resources/**/*'] }
 
   spec.ios.deployment_target = '9.0'
   spec.osx.deployment_target = '10.10'
