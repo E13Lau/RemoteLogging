@@ -9,16 +9,28 @@ public class LocalServer: RemoteLogServer {
     private let httpServer = Server()
     
     public func runServer(port: Int = 9777) {
-        httpServer.serveBundle(.module, "/")
+        
+        let bundleName = "RemoteLogging_RemoteLogging"
+        guard var resourceURL = Bundle(for: LocalServer.self).resourceURL else {
+            print("RemoteLogging - unable to find bundle named ", bundleName)
+            return
+        }
+        resourceURL.appendPathComponent(bundleName + ".bundle")
+        guard let bundle = Bundle(url: resourceURL) else {
+            print("RemoteLogging - unable to find bundle named ", bundleName)
+            return
+        }
+        
+        httpServer.serveBundle(bundle, "/")
         
         // MARK: - websocket config
         httpServer.webSocketDelegate = self
         
         do {
             try httpServer.start(port: port)
-            print("🎉🎉🎉 RemoteLoggin run in \(httpServer.port)")
+            print("🎉🎉🎉 RemoteLogging running on \(httpServer.port)")
         } catch {
-            print("RemoteLoggin -", error.localizedDescription)
+            print("RemoteLogging -", error.localizedDescription)
             let nsError = error as NSError
             if nsError.code == 48 {
                 print("RemoteLoggin -", "using automatic port assignment")
