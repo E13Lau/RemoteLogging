@@ -1,6 +1,7 @@
 # RemoteLogging
 
 RemoteLogging is a print log in the web page framework for iOS,macOS and tvOS written in Swift.
+`This is an early version, the API is not stable yet`
 
 ### Platforms
 
@@ -73,9 +74,7 @@ then open link: `http://{device hostname or ip address}:9777/`  .Log will be pri
 
 ## TODO
 
-- [x] support cocoapods
 - [ ] filter log
-- [ ] beautify log
 
 ## License
 
@@ -85,7 +84,7 @@ RemoteLogging is released under the MIT license.
 
 ## 中文说明
 
-RemoteLoggingKit 是一个使用 Swift 编写的可以通过 web 页面查看 App 的调试日志。
+RemoteLoggingKit 是一个使用 Swift 编写的可以通过 web 页面查看 App 的调试日志。这是一个早期版本,API 还没稳定。
 
 ### 支持平台
 

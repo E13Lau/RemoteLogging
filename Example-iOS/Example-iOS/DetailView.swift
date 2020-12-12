@@ -42,8 +42,8 @@ struct DetailView: View {
         func run() {
             timer?.cancel()
             let t = DispatchSource.makeTimerSource()
-            t.schedule(wallDeadline: .now(), repeating: .seconds(1))
-            var count = 1000
+            t.schedule(wallDeadline: .now(), repeating: .milliseconds(100))
+            var count = 10000
             t.setEventHandler {
                 switch count % 7 {
                 case 0:

@@ -30,9 +30,8 @@ public struct RemoteLogHandler: LogHandler {
     public func log(level: Logger.Level, message: Logger.Message, metadata: Logger.Metadata?, source: String, file: String, function: String, line: UInt) {
         queue.async {
             let filename = file.components(separatedBy: "/").last ?? ""
-            let text = "\(self.timestamp()) \(source) \(level.emoji) \(filename):\(line) \(function)"
+            let text = "<span style='color:rgb(186, 186, 186);font-size:smaller;'>\(self.timestamp()) <i>\(source) \(filename):\(line) \(function) </i></span>\(level.emoji)<br> \(message.description)"
             server.send(text: text)
-            server.send(text: message.description)
         }
     }
     

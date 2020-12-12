@@ -3,11 +3,12 @@
     <head>
         <meta charset="utf-8">
         <script type="text/javascript">
+        let isStart = true;
         function websocketConnect() {
             if ("WebSocket" in window) {
                 let hostname = window.location.hostname;
                 let port = window.location.port;
-                var ws = new WebSocket("ws://" + hostname + ":" + port);
+                let ws = new WebSocket("ws://" + hostname + ":" + port);
                 ws.onopen = function () {
                     document.getElementById("connectionStatus").innerText = "🟢";
                 }
@@ -18,10 +19,14 @@
                     }, 3000);
                 }
                 ws.onmessage = function (event) {
+                    if (isStart == false) {
+                        return;
+                    }
                     let data = event.data;
                     let li = document.createElement("li");
-                    let text = document.createTextNode(data);
-                    li.appendChild(text);
+                    li.innerHTML = data;
+                    // let text = document.createTextNode(data);
+                    // li.appendChild(text);
                     let console = document.getElementById("panel");
                     let bool = console.scrollHeight - console.scrollTop === console.clientHeight;
                     document.getElementById("console").appendChild(li);
@@ -34,12 +39,23 @@
             }
         }
         function scrollToBottomIfNeed() {
-            var element = document.getElementById("panel");
+            let element = document.getElementById("panel");
             element.scrollTop = element.scrollHeight - element.clientHeight;
         }
         function cleanConsole() {
-            var console = document.getElementById("console");
+            let console = document.getElementById("console");
             console.innerHTML = "";
+        }
+        function toggle() {
+            if (isStart) {
+                let hr = document.createElement("hr");
+                document.getElementById("console").appendChild(hr);
+                scrollToBottomIfNeed();
+            }
+            isStart = !isStart;
+
+            let button = document.getElementById("toggleButton");
+            button.innerHTML = isStart ? "stop" : "start";
         }
         </script>
         <style>
@@ -60,7 +76,7 @@
             #menu,#toolbar {
                 background-color: rgb(38, 31, 35);
                 flex: 1;
-                min-height: 15px;
+                min-height: 22px;
                 padding: 8px;
                 display: flex;
                 flex-direction: row-reverse;
@@ -103,11 +119,24 @@
                 background-color: white;
                 color: black;
             }
+            .button1 {
+                border: none;
+                color: dodgerblue;
+                font-size: 14px;
+                font-weight: normal;
+                padding: 0px 16px;
+            }
             a {
                 align-self: center;
                 color: white;
                 margin-left: 10px;
                 margin-right: 10px;
+            }
+            hr {
+                height: 2px;
+                border-width: 0;
+                color: rgb(199, 199, 199);
+                background-color: rgb(199, 199, 199);
             }
             #connectionStatus {
                 align-self: center;
@@ -122,14 +151,15 @@
             <div id="menu">
                 <a href="https://github.com/E13Lau/RemoteLogging.git">Github</a>
                 <p id="connectionStatus" title="WebSocket connection">🔴</p>
+                <button id="toggleButton" class="button button1" onclick="toggle()">stop</button>
             </div>
             <div id="panel">
                 <ul id="console">
                 </ul>
             </div>
             <div id="toolbar">
-                <input class="button" type="button" onclick="scrollToBottomIfNeed()" value="to bottom">
-                <input class="button" type="button" onclick="cleanConsole()" value="clean">
+                <button class="button" onclick="scrollToBottomIfNeed()">to bottom</button>
+                <button class="button" onclick="cleanConsole()">clean</button>
             </div>
         </div>
     </body>

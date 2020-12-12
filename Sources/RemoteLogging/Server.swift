@@ -28,7 +28,7 @@ public class LocalServer: RemoteLogServer {
         
         do {
             try httpServer.start(port: port)
-            print("🎉🎉🎉 RemoteLogging running on \(httpServer.port)")
+            print("🎉🎉🎉 RemoteLogging running, open http://\(ProcessInfo.processInfo.hostName):\(httpServer.port)")
         } catch {
             print("RemoteLogging -", error.localizedDescription)
             let nsError = error as NSError
