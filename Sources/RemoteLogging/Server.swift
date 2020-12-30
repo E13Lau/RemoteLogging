@@ -1,6 +1,28 @@
 import Telegraph
 import Foundation
 
+public struct LogMessage: Codable {
+    var type = MessageType.log
+    /// iso8601
+    let date: String
+    let source: String
+    let file: String
+    let line: String
+    let method: String
+    let level: Int
+    let message: String
+}
+
+struct InfoMessage: Codable {
+    var type = MessageType.info
+    let name: String
+}
+
+public struct MessageType {
+    static let info = "info"
+    static let log = "log"
+}
+
 public class LocalServer: RemoteLogServer {
     public static var `default` = LocalServer()
     
@@ -20,7 +42,7 @@ public class LocalServer: RemoteLogServer {
             print("RemoteLogging - unable to find bundle named ", bundleName)
             return
         }
-        
+
         httpServer.serveBundle(bundle, "/")
         
         // MARK: - websocket config
@@ -28,7 +50,7 @@ public class LocalServer: RemoteLogServer {
         
         do {
             try httpServer.start(port: port)
-            print("🎉🎉🎉 RemoteLogging running, open http://\(ProcessInfo.processInfo.hostName).local:\(httpServer.port)")
+            print("🎉🎉🎉 RemoteLogging running, link http://\(ProcessInfo.processInfo.hostName):\(httpServer.port)")
         } catch {
             print("RemoteLogging -", error.localizedDescription)
             let nsError = error as NSError
@@ -47,10 +69,16 @@ public class LocalServer: RemoteLogServer {
             ws.send(text: text)
         })
     }
+
+    public func send(message: LogMessage) {
+        send(text: message.jsonString ?? "")
+    }
 }
 
 extension LocalServer: ServerWebSocketDelegate {
     public func server(_ server: Server, webSocketDidConnect webSocket: WebSocket, handshake: HTTPRequest) {
+        let name = Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String ?? ""
+        webSocket.send(text: InfoMessage(name: name).jsonString ?? "")
     }
     
     public func server(_ server: Server, webSocket: WebSocket, didSendMessage message: WebSocketMessage) {
@@ -63,3 +91,11 @@ extension LocalServer: ServerWebSocketDelegate {
     }
 }
 
+fileprivate extension Encodable {
+    var jsonString: String? {
+        guard let data = try? JSONEncoder().encode(self) else {
+            return nil
+        }
+        return String(data: data, encoding: .utf8)
+    }
+}

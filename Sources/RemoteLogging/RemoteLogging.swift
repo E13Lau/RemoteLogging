@@ -2,6 +2,7 @@ import Logging
 import Foundation
 
 public protocol RemoteLogServer {
+    func send(message: LogMessage)
     func send(text: String)
 }
 
@@ -13,6 +14,11 @@ public struct RemoteLogHandler: LogHandler {
     private var label: String
     private var server: RemoteLogServer
     private var queue = DispatchQueue(label: "RemoteLogHandler.DispatchQueue")
+    
+    struct LoggingModel: Codable {
+        let timestamp: String
+        
+    }
     
     public subscript(metadataKey metadataKey: String) -> Logger.Metadata.Value? {
         get {
@@ -30,8 +36,7 @@ public struct RemoteLogHandler: LogHandler {
     public func log(level: Logger.Level, message: Logger.Message, metadata: Logger.Metadata?, source: String, file: String, function: String, line: UInt) {
         queue.async {
             let filename = file.components(separatedBy: "/").last ?? ""
-            let text = "<span style='color:rgb(186, 186, 186);font-size:smaller;'>\(self.timestamp()) <i>\(source) \(filename):\(line) \(function) </i></span>\(level.emoji)<br> \(message.description)"
-            server.send(text: text)
+            server.send(message: LogMessage(date: timestamp(), source: source, file: filename, line: "\(line)", method: function, level: level.comparisonValue, message: message.description))
         }
     }
     
@@ -72,6 +77,25 @@ fileprivate extension Logger.Level {
             return "❌"
         case .critical:
             return "💥"
+        }
+    }
+    
+    var comparisonValue: Int {
+        switch self {
+        case .trace:
+            return 0
+        case .debug:
+            return 1
+        case .info:
+            return 2
+        case .notice:
+            return 3
+        case .warning:
+            return 4
+        case .error:
+            return 5
+        case .critical:
+            return 6
         }
     }
 }

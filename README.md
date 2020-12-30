@@ -74,7 +74,7 @@ then open link: `http://{device hostname or ip address}:9777/`  .Log will be pri
 
 ## TODO
 
-- [ ] filter log
+- [x] filter log
 
 ## License
 

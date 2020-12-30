@@ -2,8 +2,12 @@
 <html>
     <head>
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>RemoteLogging</title>
         <script type="text/javascript">
         let isStart = true;
+        let countOfTags = 0;
+        const levelText = ['🔍 trace', '🛠 debug', '💬 info', '🗯 notice', '⚠️ warning', '❌ error', '💥 critical'];
         function websocketConnect() {
             if ("WebSocket" in window) {
                 let hostname = window.location.hostname;
@@ -16,22 +20,48 @@
                     document.getElementById("connectionStatus").innerText = "🔴";
                     setTimeout(function () {
                         websocketConnect();
-                    }, 3000);
+                    }, 2000);
                 }
                 ws.onmessage = function (event) {
                     if (isStart == false) {
                         return;
                     }
                     let data = event.data;
-                    let li = document.createElement("li");
-                    li.innerHTML = data;
-                    // let text = document.createTextNode(data);
-                    // li.appendChild(text);
-                    let console = document.getElementById("panel");
-                    let bool = console.scrollHeight - console.scrollTop === console.clientHeight;
-                    document.getElementById("console").appendChild(li);
-                    if (bool == true) {
-                        scrollToBottomIfNeed();
+                    let json = JSON.parse(data);
+                    switch (json.type) {
+                        case 'info':
+                            let label = document.getElementById("project-name");
+                            label.innerHTML = json.name;
+                            break;
+                        case 'log':
+                            let message = json.message;
+                            let index = document.getElementById("level").selectedIndex;
+                            if (json.level < index) {
+                                return;
+                            }
+                            //regex
+                            let element = document.getElementById("regex-input").value;
+                            if (element !== null || element !== "") {
+                                const re = RegExp(element, "gmi");
+                                if (re.test(message) == false) {
+                                    return;
+                                }
+                            }
+
+                            if (countOfTags > 20000) {
+                                cleanConsole();
+                            }
+
+                            let li = document.createElement("li");
+                            li.innerHTML = `<span style='color:rgb(186, 186, 186);font-size:smaller;'>${json.date} <i>${json.source} ${json.file}:${json.line} ${json.method} </i></span>${levelText[json.level]} <br> ${json.message}`;
+                            let console = document.getElementById("panel");
+                            let bool = console.scrollHeight - console.scrollTop === console.clientHeight;
+                            document.getElementById("console").appendChild(li);
+                            countOfTags += 1;
+                            if (bool) {
+                                scrollToBottomIfNeed();
+                            }
+                            break;
                     }
                 }
             } else {
@@ -59,10 +89,97 @@
         }
         </script>
         <style>
+            .container {
+                display: grid;
+                height: 100vh;
+                grid-template-rows: auto 1fr auto;
+            }
+            .bar {
+                flex: 1;
+                background-color: rgb(38, 31, 35);
+                display: flex;
+                padding: 10px 20px;
+            }
+            .bar-left {
+                flex: 1;
+                display: flex;
+                text-align: left;
+                flex-direction: row;
+            }
+            .bar-right {
+                flex: 1;
+                display: flex;
+                text-align: right;
+                flex-direction: row-reverse;
+            }
+            .button {
+                border: 2px solid white;
+                color: white;
+                padding: 0px 24px;
+                margin: 0px 10px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                font-weight: bold;
+                transition-duration: 0.2s;
+                cursor: pointer;
+                background-color: transparent;
+            }
+            .button:hover {
+                background-color: white;
+                color: black;
+            }
             body {
                 padding: 0;
                 margin: 0;
                 background-color: rgb(38, 31, 35);
+            }
+            a {
+                margin: 0px 10px;
+                align-self: center;
+                color: white;
+            }
+            hr {
+                height: 2px;
+                border-width: 0;
+                color: rgb(199, 199, 199);
+                background-color: rgb(199, 199, 199);
+            }
+            p {
+                padding: 0;
+                margin: 0 10px;
+                align-self: center;
+                color: white;                
+            }
+            input[type=search] {
+                -webkit-appearance: none;
+                border-width: 0;
+                box-sizing: border-box;
+                outline: none;
+                width: 70%;
+            }
+            select {
+                outline: none;
+            }
+            #panel {
+                background-color: rgb(40, 43, 53);
+                overflow: hidden;
+                overflow-y: auto;
+            }
+            #panel ul {
+                list-style: none;
+                padding: 0px 20px 0px 20px;
+                margin: 0 10px;
+            }
+            #panel ul li {
+                color: white;
+                font-size: large;
+            }
+            #connectionStatus {
+                align-self: center;
+                color: white;
+                margin: 0px 10px;
             }
             #page {
                 padding: 0;
@@ -71,95 +188,44 @@
                 height: 100vh;
                 display: flex;
                 flex-direction: column;
-                /* -webkit-overflow-scrolling: touch; */
-            }
-            #menu,#toolbar {
-                background-color: rgb(38, 31, 35);
-                flex: 1;
-                min-height: 22px;
-                padding: 8px;
-                display: flex;
-                flex-direction: row-reverse;
-            }
-            #toolbar {
-                flex: 2;
-                min-height: 30px;
-            }
-            #panel {
-                flex: 40;
-                background-color: rgb(40, 43, 53);
-                overflow: hidden;
-                overflow-y: auto;
-            }
-            #panel ul {
-                list-style: none;
-                padding: 0px 20px 0px 20px;
-                margin: 0;
-            }
-            #panel ul li {
-                color: white;
-                font-size:x-large;
-            }
-            .button {
-                border: 2px solid white;
-                color: white;
-                padding: 0px 32px;
-                margin-left: 10px;
-                margin-right: 10px;
-                text-align: center;
-                text-decoration: none;
-                display: inline-block;
-                font-size: 18px;
-                font-weight: bold;
-                transition-duration: 0.3s;
-                cursor: pointer;
-                background-color: transparent;
-            }
-            .button:hover {
-                background-color: white;
-                color: black;
-            }
-            .button1 {
-                border: none;
-                color: dodgerblue;
-                font-size: 14px;
-                font-weight: normal;
-                padding: 0px 16px;
-            }
-            a {
-                align-self: center;
-                color: white;
-                margin-left: 10px;
-                margin-right: 10px;
-            }
-            hr {
-                height: 2px;
-                border-width: 0;
-                color: rgb(199, 199, 199);
-                background-color: rgb(199, 199, 199);
-            }
-            #connectionStatus {
-                align-self: center;
-                color: white;
-                margin-left: 10px;
-                margin-right: 10px;                
             }
         </style>
     </head>
     <body onload="websocketConnect()">
-        <div id="page">
-            <div id="menu">
-                <a href="https://github.com/E13Lau/RemoteLogging.git">Github</a>
-                <p id="connectionStatus" title="WebSocket connection">🔴</p>
-                <button id="toggleButton" class="button button1" onclick="toggle()">stop</button>
+        <div class="container">
+            <div class="bar">
+                <div class="bar-left">
+                    <p id="project-name"></p>
+                </div>
+                <div class="bar-right">
+                    <a href="https://github.com/E13Lau/RemoteLogging.git" target="_Blank">Github</a>
+                    <p id="connectionStatus" title="WebSocket connection">🔴</p>
+                    <button id="toggleButton" class="button" onclick="toggle()">stop</button>
+                    <div style="display:flex;align-items:center;">
+                        <select name="level" id="level">
+                            <option value="trace">🔍 trace</option>
+                            <option value="debug">🛠 debug</option>
+                            <option value="info">💬 info</option>
+                            <option value="notice">🗯 notice</option>
+                            <option value="warning">⚠️ warning</option>
+                            <option value="error">❌ error</option>
+                            <option value="critical">💥 critical</option>
+                        </select>
+                    </div>
+                </div>
             </div>
             <div id="panel">
                 <ul id="console">
                 </ul>
             </div>
-            <div id="toolbar">
-                <button class="button" onclick="scrollToBottomIfNeed()">to bottom</button>
-                <button class="button" onclick="cleanConsole()">clean</button>
+            <div class="bar">
+                <div class="bar-left">
+                    <input type="search" placeholder="Filter...(Support RegExp)" id="regex-input">
+                </div>
+                <div class="bar-right">
+                    <button class="button" onclick="scrollToBottomIfNeed()">to bottom</button>
+                    <button class="button" onclick="cleanConsole()">clean</button>
+                </div>
             </div>
         </div>
     </body>
