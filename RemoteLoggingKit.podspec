@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name           = 'RemoteLoggingKit'
-  spec.version        = '0.0.5'
+  spec.version        = '0.0.6'
   spec.summary        = 'RemoteLoggingKit is a print log in the web page framework for iOS,macOS and tvOS.'
   spec.homepage       = 'https://github.com/E13Lau/RemoteLogging'
   spec.license        = 'MIT'
