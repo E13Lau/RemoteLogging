@@ -47,21 +47,21 @@ struct DetailView: View {
             t.setEventHandler {
                 switch count % 7 {
                 case 0:
-                    log.trace("ding~")
+                    log.trace("ding~\(count)")
                 case 1:
-                    log.debug("ding~")
+                    log.debug("ding~\(count)")
                 case 2:
-                    log.info("ding~")
+                    log.info("ding~\(count)")
                 case 3:
-                    log.notice("ding~")
+                    log.notice("ding~\(count)")
                 case 4:
-                    log.warning("ding~")
+                    log.warning("ding~\(count)")
                 case 5:
-                    log.error("ding~")
+                    log.error("ding~\(count)")
                 case 6:
-                    log.critical("ding~")
+                    log.critical("ding~\(count)")
                 default:
-                    log.trace("ding~")
+                    log.trace("ding~\(count)")
                 }
                 count -= 1
                 if count == 0 {

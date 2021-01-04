@@ -19,7 +19,7 @@ struct ContentView: View {
                         Text("show detail view")
                     })
                 Button("Start") {
-                    log.debug("tap Start button!!")
+                    log.debug("Tap Start button!!Tap Start button!!Tap Start button!!Tap <p>Start</p> button!!Tap Start button!!Tap Start button!!Tap Start button!!Tap Start button!!Tap Start button!!")
                 }.padding()
             }.onAppear {
                 log.trace("ContentView onAppear!")

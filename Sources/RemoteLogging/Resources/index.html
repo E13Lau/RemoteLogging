@@ -54,10 +54,17 @@
                             }
 
                             let li = document.createElement("li");
-                            li.innerHTML = `<span style='color:rgb(186, 186, 186);font-size:smaller;'>${json.date} <i>${json.source} ${json.file}:${json.line} ${json.method} </i></span>${levelText[json.level]} <br> ${json.message}`;
+                            let info = document.createElement("div");
+                            info.innerHTML = `<span style='color:rgb(186, 186, 186);font-size:smaller;'>${json.date} <i>${json.source} ${json.file}:${json.line} ${json.method} </i></span>${levelText[json.level]} <br>`;
+                            let msg = document.createElement("p");
+                            msg.innerText = json.message;
+                            li.appendChild(info);
+                            li.appendChild(msg);
+
                             let console = document.getElementById("panel");
                             let bool = console.scrollHeight - console.scrollTop === console.clientHeight;
                             document.getElementById("console").appendChild(li);
+                            document.getElementById("console").appendChild(msg);
                             countOfTags += 1;
                             if (bool) {
                                 scrollToBottomIfNeed();
@@ -93,6 +100,7 @@
             .container {
                 display: grid;
                 height: 100vh;
+                width: 100vw;
                 grid-template-rows: auto 1fr auto;
             }
             .bar {
@@ -131,6 +139,11 @@
                 background-color: white;
                 color: black;
             }
+            .centerLabel {
+                margin: 0px 10px;
+                align-self: center;
+                color: white;
+            }
             body {
                 padding: 0;
                 margin: 0;
@@ -149,8 +162,7 @@
             }
             p {
                 padding: 0;
-                margin: 0 10px;
-                align-self: center;
+                margin: 0;
                 color: white;                
             }
             input[type=search] {
@@ -170,8 +182,8 @@
             }
             #panel ul {
                 list-style: none;
-                padding: 0px 20px 0px 20px;
-                margin: 0 10px;
+                padding: 0px 10px 0px 10px;
+                margin: 0 0px;
             }
             #panel ul li {
                 color: white;
@@ -182,21 +194,13 @@
                 color: white;
                 margin: 0px 10px;
             }
-            #page {
-                padding: 0;
-                margin: 0;
-                width: 100%;
-                height: 100vh;
-                display: flex;
-                flex-direction: column;
-            }
         </style>
     </head>
     <body onload="websocketConnect()">
         <div class="container">
             <div class="bar">
                 <div class="bar-left">
-                    <p id="project-name"></p>
+                    <p class="centerLabel" id="project-name"></p>
                 </div>
                 <div class="bar-right">
                     <a href="https://github.com/E13Lau/RemoteLogging.git" target="_Blank">Github</a>
