@@ -50,7 +50,8 @@ public class LocalServer: RemoteLogServer {
         
         do {
             try httpServer.start(port: port)
-            print("🎉🎉🎉 RemoteLogging running, link http://\(ProcessInfo.processInfo.hostName):\(httpServer.port)")
+//            print("🎉🎉🎉 RemoteLogging running, link http://\(ProcessInfo.processInfo.hostName):\(httpServer.port)")
+            print("🎉🎉🎉 RemoteLogging running, port:\(httpServer.port)")
         } catch {
             print("RemoteLogging -", error.localizedDescription)
             let nsError = error as NSError
