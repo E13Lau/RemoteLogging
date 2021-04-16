@@ -27,6 +27,14 @@ dependencies: [
 
 ### Cocoapods
 
+recommend use like this
+
+```ruby
+pod "RemoteLoggingKit", :configurations => ['Debug']
+```
+
+also can like this
+
 ```ruby
 pod "RemoteLoggingKit"
 ```
@@ -75,6 +83,8 @@ then open link: `http://{device hostname or ip address}:9777/`  .Log will be pri
 ## TODO
 
 - [x] filter log
+- [ ] theme support
+- [ ] check build config
 
 ## License
 
