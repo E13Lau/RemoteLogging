@@ -83,8 +83,10 @@ then open link: `http://{device hostname or ip address}:9777/`  .Log will be pri
 ## TODO
 
 - [x] filter log
+- [ ] regex switch
 - [ ] theme support
 - [ ] check build config
+- [ ] safer access the phone's hostname
 
 ## License
 
@@ -108,10 +110,6 @@ RemoteLoggingKit 是一个使用 Swift 编写的可以通过 web 页面查看 Ap
 
 Swift软件包管理器是用于自动分发Swift代码的工具。
 
-Xcode 11 or later has integrated support for the Swift Package Manager. You can add RemoteLogging to your project by choosing the File - Swift Packages - Add Package Dependency option. Use the repository url as specified below and select the version you want to use.
-
-Or you can manually add a Package.swift file to your project with:
-
 ```swift
 dependencies: [
     .package(url: "https://github.com/E13Lau/RemoteLogging.git")
@@ -119,6 +117,13 @@ dependencies: [
 ```
 
 ### Cocoapods
+
+推荐加入 Debug 标志使仅在 Debug 编译环境下导入。
+```ruby
+pod "RemoteLoggingKit", :configurations => ['Debug']
+```
+
+或者
 
 ```ruby
 pod "RemoteLoggingKit"
