@@ -83,6 +83,7 @@ then open link: `http://{device hostname or ip address}:9777/`  .Log will be pri
 ## TODO
 
 - [x] filter log
+- [ ] highlight model
 - [ ] regex switch
 - [ ] theme support
 - [ ] check build config
